@@ -39,7 +39,7 @@ By the end of this course, students will:
 | 2 | Implement a Spam Classifier in NLP | YYYY-MM-DD |
 | 3 | Implement Question Answering in NLP | YYYY-MM-DD |
 
-_(Update the dates once each practical is completed)_
+
 
 ## 🚀 How to Run
 Each practical contains a **Jupyter Notebook (`.ipynb`)** or a **Python script (`.py`)** with step-by-step instructions. Follow the guidelines in the respective folders to execute them.
