@@ -4,7 +4,7 @@
 Natural Language Text Processing (NLTP) is a fascinating field in Artificial Intelligence that enables machines to understand, interpret, and generate human language. This subject covers essential techniques such as text preprocessing, language modeling, sentiment analysis, and chatbot development, empowering students with the skills required for real-world NLP applications.
 
 ## 🎯 Learning Objectives
-By the end of this course, students will:
+
 ✅ Master text preprocessing techniques (Tokenization, Stop-word Removal, Stemming, Lemmatization)  
 ✅ Implement NLP-based classification models like spam filters and fake news detectors  
 ✅ Develop real-world applications such as sentiment analysis and chatbots  
