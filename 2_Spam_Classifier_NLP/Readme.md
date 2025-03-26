@@ -1,6 +1,6 @@
-# 📧 Spam Classification System Using Streamlit, NLTK, and Scikit-learn
+# 📧 Spam Classification System Using Streamlit, NLTK and Scikit-learn
 
-This project is a **Spam Classification System** built with `Streamlit`, `NLTK`, and `Scikit-learn` that allows you to:
+This project is a **Spam Classification System** built with `Streamlit`, `NLTK` and `Scikit-learn` that allows you to:
 - ✅ **Train a New Model** using your own dataset.
 - ✅ **Classify Emails** to identify whether they are **HAM** or **SPAM**.
 - ✅ Visualize model performance and download trained models.
