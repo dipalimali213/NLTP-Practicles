@@ -1,56 +1,68 @@
-# 📝 Natural Language Text Processing (NLTP) Practical
+# 📘 NLTP Practicals – TY B.Tech CSE (Data Science) – Semester VI
 
-## 📌 Subject Overview
-Natural Language Text Processing (NLTP) is a fascinating field in Artificial Intelligence that enables machines to understand, interpret, and generate human language. This subject covers essential techniques such as text preprocessing, language modeling, sentiment analysis, and chatbot development, empowering students with the skills required for real-world NLP applications.
+## 📌 Subject Information
+- **Subject Name:** Natural Language Text Processing Laboratory
+- **Lab:** DS-Lab  
+- **Semester:** VI  
+- **Class:** TY B.Tech (CSE - Data Science)  
+- **Academic Year:** 2024–25  
+- **Subject Incharge:** Prof. Sujit V. Chaudhari  
+- **H.O.D. (CSE-DS & AIML):** Prof. Dr. U. M. Patil
 
-## 🎯 Learning Objectives
+---
 
-✅ Master text preprocessing techniques (Tokenization, Stop-word Removal, Stemming, Lemmatization)  
-✅ Implement NLP-based classification models like spam filters and fake news detectors  
-✅ Develop real-world applications such as sentiment analysis and chatbots  
-✅ Gain hands-on experience in information retrieval and question-answering systems  
-✅ Explore deep learning approaches like LSTMs in NLP  
+## 🧪 Experiment List
 
-## 📖 Topics Covered
-- **Fundamentals of NLP**: Understanding human language processing
-- **Text Preprocessing**: Tokenization, Lemmatization, Stemming, Stop-word Removal
-- **Machine Learning & Deep Learning in NLP**: HMM, LSTM, and more
-- **Sentiment Analysis & Spam Classification**
-- **Building Chatbots & Question Answering Systems**
-- **Information Retrieval from Text & Images**
-
-## 📂 Repository Structure
-```
-📁 NLTP_Practical/
-│── 📂 src/                      # Contains source code for practicals
-│   ├── 📁 1_Preprocessing_NLP/
-│   ├── 📁 2_Spam_Classifier_NLP/
-│   ├── 📁 3_Question_Answering_NLP/
-│── 📂 doc/                      # Documentation and reports
-│   ├── 📁 Logbook/
-│   ├── 📝 README.md
-│── 📜 .gitignore
-```
-
-## 📝 List of Practicals with Completion Dates
-| 🔢 Sr. No | 🏆 Practical Name | 📅 Date Completed |
-|-----------|------------------|------------------|
-| 1 | Pre-processing steps in NLP | YYYY-MM-DD |
+| Sr. No. | Experiment Title | Date Completed |
+|--------:|------------------|----------------|
+| 1 | Perform Pre-processing steps in NLP (Tokenization, Stop Word detection, Stemming, Lemmatization) | YYYY-MM-DD |
 | 2 | Implement a Spam Classifier in NLP | YYYY-MM-DD |
 | 3 | Implement Question Answering in NLP | YYYY-MM-DD |
+| 4 | Implement Sentiment Analysis in NLP | YYYY-MM-DD |
+| 5 | Implement a Chatbot in NLP | YYYY-MM-DD |
+| 6 | Implement Parts of Speech Tagging using HMM | YYYY-MM-DD |
+| 7 | Implement Word-Embedding and TF-IDF vectors in NLP | YYYY-MM-DD |
+| 8 | Implement Language Model using N-gram Language Model | YYYY-MM-DD |
+| 9 | Implement Fake News Classifier using LSTM (Deep Learning) | YYYY-MM-DD |
+| 10 | Implement Spelling Check, Spelling Correction, and Autocomplete using Language Models | YYYY-MM-DD |
 
+---
 
+## 📂 Folder Structure
+```
+nltp-practicals/
+├── Exp_01_Preprocessing/
+├── Exp_02_Spam_Classifier/
+├── Exp_03_Question_Answering/
+├── Exp_04_Sentiment_Analysis/
+├── Exp_05_Chatbot/
+├── Exp_06_POS_Tagging_HMM/
+├── Exp_07_WordEmbedding_TFIDF/
+├── Exp_08_Ngram_Language_Model/
+├── Exp_09_FakeNews_LSTM/
+├── Exp_10_Spelling_Correction_Autocomplete/
+├── README.md
+```
 
-## 🚀 How to Run
-Each practical contains a **Jupyter Notebook (`.ipynb`)** or a **Python script (`.py`)** with step-by-step instructions. Follow the guidelines in the respective folders to execute them.
+---
 
-### ⚙️ Prerequisites
-To run these practicals, ensure you have:
-- Python 3.x installed
-- Required Python libraries (NLTK, Scikit-learn, TensorFlow, etc.)
-- Jupyter Notebook (Recommended)
+## 🛠️ Technologies Used
+- **Languages:** Python
+- **Libraries & Tools:** NLTK, spaCy, Scikit-learn, TensorFlow, Keras, Gensim
+- **Development:** Jupyter Notebook / Google Colab
 
-## 📚 References & Recommended Books
-📖 **Jurafsky and Martin**, *Speech and Language Processing*, Prentice Hall, 3rd Edition, 2020.  
-📖 **Uday Kamath**, *Deep Learning for NLP and Speech Recognition*, 1st Edition, 2019.  
+---
 
+## ✅ How to Run
+1. Clone this repository using `git clone` or download the ZIP.
+2. Open your preferred Python IDE (e.g., Jupyter Notebook, VS Code).
+3. Navigate to the specific experiment folder.
+4. Open and run the `.ipynb` file step-by-step.
+
+---
+
+🔍 _Learning NLP by doing — Practice, Explore, and Innovate!_
+
+---
+
+> **Developed and Maintained by:** TY B.Tech CSE (DS) Students from Roll No 47 to 68, under guidance of Prof. Sujit V. Chaudhari
