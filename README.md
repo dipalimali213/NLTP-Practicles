@@ -57,7 +57,7 @@ nltp-practicals/
 1. Clone this repository using `git clone` or download the ZIP.
 2. Open your preferred Python IDE (e.g., Jupyter Notebook, VS Code).
 3. Navigate to the specific experiment folder.
-4. Open and run the `.ipynb` file step-by-step.
+4. Open and run the `.py` file step-by-step.
 
 ---
 
