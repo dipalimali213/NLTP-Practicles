@@ -39,11 +39,7 @@ This project allows users to create a **knowledge base** from PDF documents or l
 - The vector embeddings are stored in a `FAISS` index.
 - The vector store is saved as a `.pkl` file for future use.
 
-### 2. **Load Pre-trained PKL Model**
-- Upload a previously generated `.pkl` file.
-- Load the vector store and start asking questions instantly.
-
-### 3. **Ask Questions**
+### 2. **Ask Questions**
 - Enter a question in the text box.
 - The system performs a **similarity search** to identify the most relevant chunks from the document.
 - The system returns an answer based on the context extracted from the document.
