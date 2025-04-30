@@ -1,100 +1,146 @@
-import streamlit as st
-import os
-from dotenv import load_dotenv
-from langchain_community.document_loaders import PyPDFLoader
-from langchain_text_splitters import CharacterTextSplitter
-from langchain_community.vectorstores import FAISS
-from langchain_huggingface import HuggingFaceEmbeddings
-# import requests
-import pickle
-import tempfile
-
-load_dotenv()
-st.set_page_config(page_title="Q&A System in NLP", layout="wide")
-
-if 'vectorstore' not in st.session_state:
-    st.session_state.vectorstore = None
-if 'knowledge_base_type' not in st.session_state:
-    st.session_state.knowledge_base_type = None
-if 'current_file_name' not in st.session_state:
-    st.session_state.current_file_name = None
-
-def process_pdf(pdf_file):
-    with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as tmp_file:
-        tmp_file.write(pdf_file.getvalue())
-        pdf_path = tmp_file.name
-
-    loader = PyPDFLoader(file_path=pdf_path)
-    documents = loader.load()
-    
-    text_splitter = CharacterTextSplitter(chunk_size=500, chunk_overlap=100, separator="\n")
-    split_documents = text_splitter.split_documents(documents)
-    
-    embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
-    vectorstore = FAISS.from_documents(split_documents, embeddings)
-    
-    os.unlink(pdf_path)  
-    return vectorstore
-
-def save_vectorstore(vectorstore, pdf_name):
-    base_name = os.path.splitext(pdf_name)[0]
-    pkl_filename = f"{base_name}.pkl"
-    with open(pkl_filename, "wb") as f:
-        pickle.dump(vectorstore, f)
-    return pkl_filename
-
-def load_vectorstore(pkl_file):
-    with tempfile.NamedTemporaryFile(delete=False, suffix='.pkl') as tmp_file:
-        tmp_file.write(pkl_file.getvalue())
-        pkl_path = tmp_file.name
-
-    with open(pkl_path, "rb") as f:
-        vectorstore = pickle.load(f)
-    
-    os.unlink(pkl_path) 
-    return vectorstore
-
-def get_qa_response(vectorstore, question):
-    relevant_docs = vectorstore.similarity_search(question)
-    context = " ".join([doc.page_content for doc in relevant_docs])
-    
-    return context
-
-st.title("📚 Document Q&A System")
-
-with st.sidebar:
-    st.header("Knowledge Base Settings")
-    knowledge_base_type = st.radio(
-        "Select Knowledge Base Type",
-        ["PDF Document", "Pre-trained Model (PKL)"]
-    )
-
-    if knowledge_base_type == "PDF Document":
-        pdf_file = st.file_uploader("Upload PDF Document", type=['pdf'])
-        if pdf_file and st.session_state.knowledge_base_type != "pdf":
-            st.session_state.current_file_name = pdf_file.name
-            with st.spinner("Processing PDF..."):
-                st.session_state.vectorstore = process_pdf(pdf_file)
-                st.session_state.knowledge_base_type = "pdf"
-                
-                saved_file = save_vectorstore(st.session_state.vectorstore, st.session_state.current_file_name)
-                st.success(f"PDF processed and saved as '{saved_file}'")
-
-    else:
-        pkl_file = st.file_uploader("Upload PKL Model", type=['pkl'])
-        if pkl_file and st.session_state.knowledge_base_type != "pkl":
-            with st.spinner("Loading PKL model..."):
-                st.session_state.vectorstore = load_vectorstore(pkl_file)
-                st.session_state.knowledge_base_type = "pkl"
-                st.success("Model loaded successfully!")
-
-st.header("Ask Questions")
-
-if st.session_state.vectorstore is None:
-    st.info("Please upload a PDF document or PKL model to start asking questions.")
-else:
-    question = st.text_input("Enter your question:")
-    if question:
-        with st.spinner("Getting answer..."):
-            answer = get_qa_response(st.session_state.vectorstore, question)
-            st.write("Answer:", answer)
+from flask import Flask, request, render_template_string
+from transformers import pipeline
+import PyPDF2
+import io
+app = Flask(__name__)
+qa_pipeline = pipeline("question-answering", model="distilbert-base-uncased-distilled-squad")
+HTML_TEMPLATE = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PDF Q&A System</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #cfd9df, #e2ebf0);
+            color: #333;
+        }
+        header {
+            background-color: #3f51b5;
+            padding: 25px;
+            color: white;
+            text-align: center;
+            font-size: 32px;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+        .main {
+            max-width: 700px;
+            margin: 60px auto;
+            background-color: #ffffffee;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+        }
+        label {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        input[type="file"] {
+            padding: 12px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            border: 2px dashed #3f51b5;
+            border-radius: 8px;
+            width: 100%;
+            background-color: #f5f5f5;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0 25px;
+            font-size: 17px;
+            border: 1.5px solid #999;
+            border-radius: 8px;
+        }
+        .center-btn {
+            text-align: center;
+        }
+        button {
+            background-color: #ec407a;
+            color: white;
+            padding: 14px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            background-color: #d81b60;
+            transform: scale(1.05);
+        }
+        .result {
+            margin-top: 30px;
+            background-color: #fce4ec;
+            padding: 20px;
+            border-left: 6px solid #ec407a;
+            border-radius: 10px;
+            font-size: 18px;
+        }
+        footer {
+            background-color: #3f51b5;
+            color: white;
+            text-align: center;
+            padding: 14px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        .header-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        Question and Answering
+    </header>
+    <div class="main">
+        <form method="POST" enctype="multipart/form-data">
+            <label>Select a PDF file:</label><br>
+            <input type="file" name="pdf_file" required>
+            <label>Enter your question:</label>
+            <input type="text" name="question" placeholder="Type your question here..." required>
+            <div class="center-btn">
+                <button type="submit">Get Answer</button>
+            </div>
+        </form>
+        {% if answer %}
+        <div class="result">
+            <strong>Answer:</strong><br>{{ answer }}
+        </div>
+        {% endif %}
+    </div>
+    <footer>
+        &copy; 2025 | Designed by TYDS T3 Batch
+    </footer>
+</body>
+</html>
+"""
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    answer = ""
+    if request.method == 'POST':
+        pdf_file = request.files['pdf_file']
+        question = request.form['question']
+        if pdf_file:
+            pdf_reader = PyPDF2.PdfReader(io.BytesIO(pdf_file.read()))
+            context = ""
+            for page in pdf_reader.pages:
+                context += page.extract_text() or ""
+            if context.strip():
+                result = qa_pipeline(question=question, context=context)
+                answer = result['answer']
+            else:
+                answer = "Could not extract text from the PDF."
+    return render_template_string(HTML_TEMPLATE, answer=answer)
+if __name__ == '__main__':
+    app.run(debug=True)
